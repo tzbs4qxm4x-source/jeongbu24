@@ -1,6 +1,127 @@
 <!DOCTYPE html>
-<html>
-  <body>
-    <h1>내 사이트 완성</h1>
-  </body>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>모바일 신분증</title>
+
+<style>
+body {
+  font-family: sans-serif;
+  background: #eee;
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+}
+
+.card {
+  width: 320px;
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  background: black;
+  color: white;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+/* QR 화면 숨김 */
+#qrPage {
+  display: none;
+}
+
+/* 시간 끝나면 색 변경 */
+.expired {
+  background: #ffdddd;
+  border: 2px solid red;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 기본 카드 -->
+<div class="card" id="mainPage">
+
+  <!-- 🔥 여기 사진 바꾸면 됨 -->
+  <img src="https://via.placeholder.com/120" id="profile">
+
+  <h2>홍길동</h2>
+  <p>05.12.07</p>
+  <p>서울특별시</p>
+
+  <p id="time">01:30</p>
+
+  <button onclick="showQR()">QR정보 확인</button>
+</div>
+
+
+<!-- QR 화면 -->
+<div class="card" id="qrPage">
+
+  <img src="https://via.placeholder.com/120">
+
+  <h2>홍길동</h2>
+  <p>05.12.07</p>
+  <p>서울특별시</p>
+
+  <!-- QR -->
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=test">
+
+  <p id="time2">01:30</p>
+
+  <button onclick="back()">닫기</button>
+</div>
+
+
+<script>
+let timeLeft = 90;
+
+function updateTime() {
+  let m = Math.floor(timeLeft / 60);
+  let s = timeLeft % 60;
+
+  let t = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+
+  document.getElementById('time').innerText = t;
+  document.getElementById('time2').innerText = t;
+
+  if (timeLeft > 0) {
+    timeLeft--;
+  } else {
+    document.getElementById('mainPage').classList.add('expired');
+    document.getElementById('qrPage').classList.add('expired');
+  }
+}
+
+setInterval(updateTime, 1000);
+
+
+function showQR() {
+  document.getElementById('mainPage').style.display = 'none';
+  document.getElementById('qrPage').style.display = 'block';
+}
+
+function back() {
+  document.getElementById('qrPage').style.display = 'none';
+  document.getElementById('mainPage').style.display = 'block';
+}
+</script>
+
+</body>
 </html>
